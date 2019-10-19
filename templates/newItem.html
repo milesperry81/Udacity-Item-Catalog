@@ -1,0 +1,84 @@
+<html>
+<head>
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+	</head>
+<body>
+
+<!--MESSAGE FLASHING -->
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+
+<ul>
+{% for message in messages %}
+  <li><strong>{{message}}</strong></li>
+  {% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+
+
+<!--Table handles app name and login button in header -->
+<table class='table'>
+<tr>
+<th class='header'><a href = '{{url_for('categoryList')}}'><h1>Catalog App</h1></a></th>
+<th class='header2'>
+	{%if 'username' in session %}
+	<button class="button" onclick="window.location.href = '{{url_for('logout')}}';">Logout</button>
+	{% else %}
+	<button class="button" onclick="window.location.href = '{{url_for('login')}}';">Login</button>
+	{% endif %}
+</th>
+</tr>
+<tr>
+<td align='center' colspan="2">
+
+	<form action="{{url_for('newItem', category_name = category.name )}}" method = 'POST'>
+	<table class='table2'>
+	<tr align="left">
+	<th><h2>New Item</h2></th>
+	</tr>
+	<tr  valign="top">
+	<td>
+		Title</br><input type='text' size='50' name='title' required>
+	</td>
+	</tr>
+	<tr  valign="top">
+	<td>
+		</br>Description</br><input type='text' size='50' name='details' required>
+	</td>
+	</tr>
+	<tr  valign="top">
+	<td>
+		</br>Category</br>
+		<!--Iterate through categories to create drop down. Ensure current category is selected as default -->
+		<select name="selectedCategory" required>
+		{% for c in categories %}
+		  {% if c.name == category.name %}
+			<option value="{{c.name}}" selected>{{c.name}}</option>
+		  {% else %}
+			<option value="{{c.name}}">{{c.name}}</option>
+		  {% endif %}
+		{% endfor %}
+		</select>
+	</td>
+	</tr>
+	<tr  align="left">
+	<td>
+		</br><input type='submit' value='Submit'>
+	</td>
+	</tr>
+	</table>
+	</form>
+</td>
+</tr>
+<tr>
+<td class="lowerlinks" colspan="2">
+<a href = '{{url_for('categoryList')}}'>Return to Main</a> > <a href = '{{url_for('itemsList',category_name = category.name)}}'>{{category.name}}</a>
+</td>
+</tr>
+</table
+
+
+</body>
+
+</html>

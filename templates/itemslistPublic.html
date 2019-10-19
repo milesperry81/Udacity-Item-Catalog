@@ -1,0 +1,71 @@
+<html>
+<head>
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+	</head>
+<body>
+
+<!--MESSAGE FLASHING -->
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+
+<ul>
+{% for message in messages %}
+  <li><strong>{{message}}</strong></li>
+  {% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+
+<!--Table handles app name and login button in header -->
+<table class='table'>
+<tr>
+<th class='header'><a href = '{{url_for('categoryList')}}'><h1>Catalog App</h1></a></th>
+<th class='header2'>
+	{%if 'username' in session %}
+	<button class="button" onclick="window.location.href = '{{url_for('logout')}}';">Logout</button>
+	{% else %}
+	<button class="button" onclick="window.location.href = '{{url_for('login')}}';">Login</button>
+	{% endif %}
+</th>
+</tr>
+<tr>
+<td align='center' colspan="2">
+
+	<table class='table2'>
+	<tr align="left">
+	<th><h2>Categories</h2></th>
+	<th><h2>{{category.name}} ({{count}} Items)</h2></th>
+	</tr>
+	<tr  valign="top">
+	<td>
+		<!--Iterate through categories to create list of categories -->
+		{% for c in categories %}
+		<p><a href = '{{url_for('itemsList',category_name=c.name)}}'>{{c.name}}</a></p>
+		{% endfor %}
+	</td>
+	<td>
+		<!--Iterate through items to display list of items in that category-->
+		{% for i in items %}
+		<div>
+		<p>
+		<a href = '{{url_for('itemDescription',category_name=category.name, item_name = i.name)}}'>{{i.name}}</a>
+		</p>
+		</div>
+		{% endfor %}
+	</td>
+	</tr>
+	</table>
+
+
+</td>
+</tr>
+<tr>
+<td class="lowerlinks" colspan="2"><a href = '{{url_for('categoryList')}}'>Return to Main</a></td>
+</tr>
+</table
+
+
+
+</body>
+
+</html>
